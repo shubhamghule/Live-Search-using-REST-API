@@ -1,6 +1,8 @@
 import React from "react";
 import axios from "axios";
 import "../styles/Search.css";
+import CardSection from "./CardSection";
+
 
 
 class Search extends React.Component {
@@ -28,9 +30,9 @@ class Search extends React.Component {
     const pageNumber = updatedPageNo ? `&page=${updatedPageNo}` : '';
         
     // By default the limit of results is 20
-    const searchUrl = `https://api.homedrop.in/products?search=${query}&category=&limit=15&pagination_token=15`;  //${query}`; 
+    const searchUrl = `https://api.homedrop.in/products?search=${query}&category=&limit=20&pagination_token=15`;  
+
     
-    // const searchUrl = `https://pixabay.com/api/?key=12413278-79b713c7e196c7a3defb5330e&q=${query}${pageNumber}`;
 
     if (this.cancel) {
 		// Cancel the previous request before making a new request
@@ -57,7 +59,7 @@ class Search extends React.Component {
             })
                 .catch((error) => {
                     if (axios.isCancel(error) || error) {
-                        console.log("err : ",error);
+                        // console.log("err : ",error);
 
                         this.setState({
                             loading: false,
@@ -80,6 +82,7 @@ class Search extends React.Component {
             }
         };
 
+        
         renderSearchResults = () => {
             console.log("state : ",this.state);
             const { results } = this.state;
@@ -89,12 +92,7 @@ class Search extends React.Component {
                     <div className="results-container">
                         {results.map(result => {
                             return (
-                                <a key={result.id} href={result.thumbnail} className="result-item">
-                                    <h6 className="image-username">{result.name}</h6>
-                                    <div className="image-wrapper">
-                                        <img className="image" src={result.thumbnail} alt={`${result.name} image`}/>
-                                    </div>
-                                </a>
+                                <CardSection result = {result}></CardSection>
                             );
                         })}
                     </div>
@@ -108,7 +106,7 @@ class Search extends React.Component {
         // console.log(query);
         return(
             
-            <div className="container">
+            <div className="container " >
                 {/* Heading */}
                 <h2 className="heading"> Live Search </h2>
                 {/* search input */}
@@ -121,6 +119,7 @@ class Search extends React.Component {
                         onChange={this.handleOnInputChange}
                     />
                     <i className="fa fa-search search-icon" aria-hidden="true"></i>
+
                 </label>
                 {/*Result*/}
 			{ this.renderSearchResults() }
@@ -130,3 +129,7 @@ class Search extends React.Component {
     }
 }
 export default Search;
+
+
+
+
